@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ерасыл & Жанэль — Үйлену тойы</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;600&family=Noto+Sans:wght@300;400;600&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #3e2723;
+      --secondary: #5d4037;
+      --accent: #8d6e63;
+      --gold: #D4AF37;
+      --glass: rgba(255, 255, 255, 0.92);
+      --radius: 24px;
+      --rich-gradient: linear-gradient(135deg, #fffdf5 0%, #ffecb3 100%);
+    }
+
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      color: var(--primary);
+      font-family: 'Raleway', sans-serif;
+      background-image: url('2.jpg');
+      background-color: #d7ccc8;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: ''; position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(3px); z-index: -2;
+    }
+
+    .wrap {
+      max-width: 600px; margin: 0 auto;
+      padding: 40px 20px 100px; position: relative; z-index: 1;
+    }
+
+    .card {
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(62, 39, 35, 0.15);
+      margin-bottom: 30px;
+      overflow: hidden;
+      text-align: center;
+      transition: transform 0.3s ease;
+      position: relative;
+      opacity: 0; transform: translateY(30px);
+    }
+    
+    .card.visible {
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    header .names {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(22px, 10vw, 75px);
+      line-height: 1.2;
+      margin: 10px 0;
+      background: linear-gradient(to right, #3e2723, #8d6e63);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #3e2723;
+    }
+    header .sub { font-family: 'Raleway', sans-serif; color: #5d4037; letter-spacing: 4px; font-weight: 600; text-transform: uppercase; font-size: 14px;}
+
+    .fancy-date {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 700; margin-top: 20px;
+      background: linear-gradient(to right, #3e2723, #8d6e63);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.1));
+      letter-spacing: 1px;
+    }
+
+    .rich-block {
+      background: var(--rich-gradient) !important;
+      border: 2px solid #fff;
+      box-shadow: 0 15px 40px rgba(212, 175, 55, 0.25);
+      position: relative;
+    }
+    .rich-block .inner { font-family: 'Noto Sans', sans-serif; color: #4e342e; }
+    .rich-block h2.h {
+      font-family: 'Noto Serif', serif; color: #3e2723;
+      font-weight: 700; border-bottom-color: var(--gold);
+    }
+    .h::after {
+      content: ''; display: block; width: 60px; height: 3px;
+      background: var(--gold); margin: 8px auto 0; border-radius: 2px;
+    }
+    .rich-block::before {
+      content: ''; position: absolute;
+      top: 12px; left: 12px; right: 12px; bottom: 12px;
+      border: 1px dashed rgba(212, 175, 55, 0.5);
+      border-radius: 18px; pointer-events: none;
+    }
+
+    .corner-heart {
+        position: absolute; font-size: 16px; color: #d32f2f;
+        opacity: 0.7; z-index: 10;
+        animation: heartCornerBeat 2s infinite ease-in-out;
+    }
+    .ch-tl { top: 15px; left: 15px; } .ch-tr { top: 15px; right: 15px; }
+    .ch-bl { bottom: 15px; left: 15px; } .ch-br { bottom: 15px; right: 15px; }
+    @keyframes heartCornerBeat { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+    .calendar-wrap { margin-top: 15px; }
+    .cal-header {
+      font-family: 'Noto Serif', serif;
+      font-weight: bold; font-size: 18px;
+      color: #3e2723; margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+    .cal-day-name {
+      font-size: 12px; color: #8d6e63; font-weight: bold;
+      padding-bottom: 5px;
+    }
+    .cal-day {
+      height: 36px; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; border-radius: 50%; color: #4e342e;
+    }
+    .cal-day.marked {
+      background: #5d4037; color: white;
+      font-weight: bold; position: relative;
+      box-shadow: 0 4px 10px rgba(93, 64, 55, 0.3);
+    }
+    .cal-day.marked::after {
+      content: '❤'; position: absolute;
+      top: -6px; right: -6px; font-size: 12px; color: #d32f2f;
+    }
+
+    .photo-frame {
+      position: relative; width: 200px; height: 200px; margin: 20px auto;
+    }
+    .round-photo {
+        width: 100%; height: 100%; object-fit: cover;
+        border-radius: 50%; border: 4px solid white;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .photo-frame::before {
+      content: ''; position: absolute;
+      top: -10px; left: -10px; right: -10px; bottom: -10px;
+      border-radius: 50%; border: 2px dashed var(--gold);
+      animation: spin 20s linear infinite; z-index: -1;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    .btn {
+      display: block; width: 100%; padding: 16px;
+      text-align: center; border-radius: 50px;
+      text-decoration: none; font-weight: 600;
+      cursor: pointer; border: none; margin-top: 15px;
+      transition: all 0.3s; font-size: 16px;
+      font-family: 'Noto Sans', sans-serif;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .btn.primary { 
+        background: linear-gradient(135deg, #5d4037 0%, #3e2723 100%);
+        color: white; 
+        box-shadow: 0 5px 15px rgba(62, 39, 35, 0.3);
+    }
+    .btn.primary:hover { transform: translateY(-2px); background: #4e342e; }
+    
+    .btn.secondary { 
+        background: rgba(255,255,255,0.8); color: #5d4037; border: 1px solid #8d6e63;
+        width: auto; display: inline-block; padding: 10px 30px; font-size: 13px;
+    }
+
+    .inner { padding: 35px 25px; }
+
+    .countdown { display: flex; gap: 8px; margin-top: 20px; justify-content: center; }
+    .cd-item { 
+      flex: 1; background: white; padding: 10px 5px; 
+      border-radius: 12px; border: 1px solid #d7ccc8;
+    }
+    .cd-num { font-size: 24px; font-weight: bold; font-family: 'Noto Serif', serif; color: #3e2723; }
+    .cd-lbl { font-size: 10px; text-transform: uppercase; color: #8d6e63; margin-top: 2px;}
+
+    .form { display:grid; gap:15px; margin-top:20px; text-align:left; }
+    .field label { font-size:14px; font-weight: 600; color:#4e342e; margin-bottom:8px; display: block; font-family: 'Noto Sans', sans-serif;}
+    .field input[type="text"] {
+      width:100%; padding:15px; border-radius:15px;
+      border: 1px solid #bcaaa4; background: white;
+      font-family: 'Noto Sans', sans-serif;
+    }
+    .choices { background: white; padding: 15px; border-radius: 15px; border: 1px solid #d7ccc8; }
+    .choice { display:flex; gap:10px; align-items:center; margin-bottom: 10px; cursor: pointer; font-family: 'Noto Sans', sans-serif;}
+    input[type="radio"]:checked { border-color: var(--gold); background-color: var(--gold); }
+
+    .toast {
+      display:none; margin-top:15px; padding:15px; border-radius:15px;
+      background: #E8F5E9; border:1px solid #C8E6C9;
+      color: #2E7D32; text-align:center; font-weight: 600; font-family: 'Noto Sans', sans-serif;
+    }
+    .toast.show { display:block; animation: popIn 0.5s; }
+    @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .heart-beat { display: inline-block; animation: heartbeat 1.5s infinite; color: #d32f2f; }
+    @keyframes heartbeat { 0% { transform: scale(1); } 14% { transform: scale(1.3); } 28% { transform: scale(1); } 42% { transform: scale(1.3); } 70% { transform: scale(1); } }
+
+    #petals-container {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .petal {
+      position: absolute;
+      background: rgba(255, 248, 225, 0.7);
+      border-radius: 150% 0 150% 0;
+      animation: falling 10s linear infinite;
+    }
+    @keyframes falling {
+      0% { transform: translate(0, -10vh) rotate(0deg); opacity: 0; }
+      20% { opacity: 0.8; }
+      100% { transform: translate(100px, 110vh) rotate(360deg); opacity: 0; }
+    }
+
+    footer {
+      font-family: 'Great Vibes', cursive;
+      font-size: 24px; opacity: 0.8; margin-top: 30px; color: #3e2723;
+    }
+  </style>
+</head>
+<body>
+
+<div id="petals-container"></div>
+
+<main class="wrap">
+  
+  <header class="card scroll-anim" style="padding: 50px 20px;">
+    <p class="sub">Шақыру билеті</p>
+    <h1 class="names">Ерасыл<span class="heart">❤</span>Жанэль</h1>
+    
+    <div class="photo-frame">
+      <img src="1.jpg" onerror="this.src='https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'" alt="Жұптың суреті" class="round-photo">
+    </div>
+    
+    <div style="margin-top: 25px;">
+        <audio id="bgm" loop>
+            <source src="music.mp3" type="audio/mpeg">
+        </audio>
+        <button id="musicBtn" class="btn secondary">
+           🎵 Әуенді қосу
+        </button>
+    </div>
+
+    <div class="fancy-date">
+       ❣  04.07.2026  ❣ 
+    </div>
+  </header>
+
+  <section class="card scroll-anim rich-block">
+    <div class="corner-heart ch-tl">❤</div>
+    <div class="corner-heart ch-tr">❤</div>
+    <div class="corner-heart ch-bl">❤</div>
+    <div class="corner-heart ch-br">❤</div>
+
+    <div class="inner">
+      <h2 class="h">Құрметті қонақтар!</h2>
+      <p style="line-height: 1.8; font-size: 17px;">
+        Ұлымыз Ерасыл мен келініміз Жанэльдің үйлену тойына арналған ақ дастарханымызға сіз(дер)ді ізгі ниетпен шақырамыз.<br>
+        <span class="heart-beat">❤</span>      
+      </p>
+    </div>
+  </section>
+
+  <section class="card scroll-anim rich-block">
+    <div class="corner-heart ch-tl">❤</div>
+    <div class="corner-heart ch-tr">❤</div>
+    <div class="corner-heart ch-bl">❤</div>
+    <div class="corner-heart ch-br">❤</div>
+
+    <div class="inner">
+      <h2 class="h">Той мәліметтері</h2>
+      <p style="font-size: 20px; margin-bottom: 5px; font-weight: bold; color: #3e2723;">4 шілде 2026</p>
+      <p style="color: #5d4037; margin-bottom: 25px;">Басталуы 18:00</p>
+      
+      <div style="margin: 20px 0;">
+        <p style="font-size: 20px; margin-bottom: 5px; font-weight: bold; color: #3e2723;">📍 «Батыр» мейрамханасы</p>
+        <p style="color: #5d4037; font-size: 15px;">Алматы облысы, Ұзынағаш ауылы<br>Тоққұлов көшесі, 17Б</p>
+      </div>
+      
+      <a href="https://go.2gis.com/gY1G1" target="_blank" rel="noopener noreferrer" class="btn primary">🗺️ Картадан ашу (2GIS)</a>
+    </div>
+  </section>
+
+  <section class="card scroll-anim rich-block">
+    <div class="corner-heart ch-tl">❤</div>
+    <div class="corner-heart ch-tr">❤</div>
+    <div class="corner-heart ch-bl">❤</div>
+    <div class="corner-heart ch-br">❤</div>
+
+    <div class="inner">
+      <p style="margin-bottom: 15px; font-size: 18px;">Той иесі: <strong style="color: #3e2723;">Анасы — Райхан</strong></p>
+      <hr style="border: 0; border-top: 1px dashed #8d6e63; opacity: 0.5; margin: 20px 0;">
+      <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 2px;">Тойға дейін қалды:</p>
+      <div class="countdown" id="countdown"></div>
+    </div>
+  </section>
+
+  <section class="card scroll-anim rich-block">
+    <div class="corner-heart ch-tl">❤</div>
+    <div class="corner-heart ch-tr">❤</div>
+    <div class="corner-heart ch-bl">❤</div>
+    <div class="corner-heart ch-br">❤</div>
+
+    <div class="inner">
+      <h2 class="h">Назар аударыңыз!</h2>
+      <p style="font-size: 16px; line-height: 1.6; color: #4e342e;">
+         Құрметті қонақтар! 
+
+Тойымыздың форматына және барша қонақтың жайлылығы үшін баласыз келуіңізді сұраймыз. 
+
+Түсіністік танытқандарыңызға көп рақмет!
+      </p>
+    </div>
+  </section>
+
+  <section class="card scroll-anim rich-block">
+    <div class="corner-heart ch-tl">❤</div>
+    <div class="corner-heart ch-tr">❤</div>
+    <div class="corner-heart ch-bl">❤</div>
+    <div class="corner-heart ch-br">❤</div>
+
+    <div class="inner">
+      <h2 class="h">Той күні</h2>
+      <div class="calendar-wrap">
+        <div class="cal-header">Шілде 2026</div>
+        <div class="cal-grid">
+          <div class="cal-day-name">Дс</div>
+          <div class="cal-day-name">Сс</div>
+          <div class="cal-day-name">Ср</div>
+          <div class="cal-day-name">Бс</div>
+          <div class="cal-day-name">Жм</div>
+          <div class="cal-day-name">Сн</div>
+          <div class="cal-day-name">Жс</div>
+          
+          <div class="cal-day"></div> <div class="cal-day"></div> <div class="cal-day">1</div>
+          <div class="cal-day">2</div>
+          <div class="cal-day">3</div>
+          <div class="cal-day marked">4</div> <div class="cal-day">5</div>
+          <div class="cal-day">6</div>
+          <div class="cal-day">7</div>
+          <div class="cal-day">8</div>
+          <div class="cal-day">9</div>
+          <div class="cal-day">10</div>
+          <div class="cal-day">11</div>
+          <div class="cal-day">12</div>
+          <div class="cal-day">13</div>
+          <div class="cal-day">14</div>
+          <div class="cal-day">15</div>
+          <div class="cal-day">16</div>
+          <div class="cal-day">17</div>
+          <div class="cal-day">18</div>
+          <div class="cal-day">19</div>
+          <div class="cal-day">20</div>
+          <div class="cal-day">21</div>
+          <div class="cal-day">22</div>
+          <div class="cal-day">23</div>
+          <div class="cal-day">24</div>
+          <div class="cal-day">25</div>
+          <div class="cal-day">26</div>
+          <div class="cal-day">27</div>
+          <div class="cal-day">28</div>
+          <div class="cal-day">29</div>
+          <div class="cal-day">30</div>
+          <div class="cal-day">31</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card scroll-anim rich-block" id="rsvp">
+    <div class="corner-heart ch-tl">❤</div>
+    <div class="corner-heart ch-tr">❤</div>
+    <div class="corner-heart ch-bl">❤</div>
+    <div class="corner-heart ch-br">❤</div>
+
+    <div class="inner">
+      <h2 class="h">Келуіңізді растаңыз</h2>
+      <p style="font-size: 15px; margin-bottom: 20px; opacity: 0.9;">
+        Төмендегі сауалнаманы толтыруыңызды сұраймыз:
+      </p>
+
+      <form class="form" id="rsvpForm">
+        <div class="field">
+          <label for="guestName">Аты-жөніңіз</label>
+          <input id="guestName" type="text" placeholder="Мысалы: Арман және Әйгерім" required>
+        </div>
+
+        <div class="field">
+          <label>Қатысу статусы</label>
+          <div class="choices">
+            <label class="choice">
+              <input type="radio" name="status" value="Иә, келемін" required>
+              <span>Иә, міндетті түрде келемін!</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="status" value="Жұбыммен келемін">
+              <span>Жұбыммен келемін</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="status" value="Өкінішке орай, қатыса алмаймын">
+              <span>Өкінішке орай, келе алмаймын</span>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn primary" type="submit">Жіберу ✅</button>
+        <div class="toast" id="rsvpToast"></div>
+      </form>
+    </div>
+  </section>
+
+  <footer style="text-align: center;">
+    <p>Ерасыл <span class="heart-beat">❤</span> Жанэль • 2026</p>
+  </footer>
+
+</main>
+
+<script>
+  // ==========================================
+  // GOOGLE SCRIPT URL
+  // ==========================================
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwk3fB9_crHAA5pFPTQkaUwBXpjiTlFcIiD9xyslZ-g6Uk4cW3WyTNQstEMgB3eStEh/exec"; 
+  // ==========================================
+
+  // 1. SCROLL ANIMATION
+  const observerOptions = { threshold: 0.1 };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target); 
+      }
+    });
+  }, observerOptions);
+  document.querySelectorAll('.scroll-anim').forEach(el => observer.observe(el));
+
+  // 2. PETALS
+  function createPetals() {
+    const container = document.getElementById('petals-container');
+    const petalCount = 12; 
+    for (let i = 0; i < petalCount; i++) {
+      const petal = document.createElement('div');
+      petal.classList.add('petal');
+      const size = Math.random() * 10 + 5;
+      const left = Math.random() * 100;
+      const duration = Math.random() * 5 + 10;
+      const delay = Math.random() * 10;
+      petal.style.width = `${size}px`;
+      petal.style.height = `${size}px`;
+      petal.style.left = `${left}%`;
+      petal.style.animationDuration = `${duration}s`;
+      petal.style.animationDelay = `-${delay}s`;
+      container.appendChild(petal);
+    }
+  }
+  createPetals();
+
+  // 3. MUSIC PLAYER LOGIC
+  const audio = document.getElementById('bgm');
+  const btn = document.getElementById('musicBtn');
+  let playing = false;
+
+  function playFrom30() {
+    if (!audio) return;
+    try { audio.currentTime = 30; } catch(e){}; 
+    audio.play().then(() => {
+        playing = true;
+        setBtn(true);
+    }).catch(e => console.log("Audio waiting for interaction"));
+  }
+
+  function setBtn(state){
+    if(!btn) return;
+    btn.innerHTML = state ? "⏸️ Стоп" : "🎵 Әуенді қосу";
+    btn.classList.toggle('primary', !state); 
+    btn.classList.toggle('secondary', state);
+  }
+
+  btn.onclick = (e) => {
+    e.stopPropagation(); // Чтобы клик по кнопке не ломал логику авто-старта
+    if(!playing){
+      playFrom30();
+    } else {
+      audio.pause();
+      playing = false;
+      setBtn(false);
+    }
+  };
+
+  // 4. COUNTDOWN
+  const eventDate = new Date('2026-07-04T18:00:00+05:00').getTime();
+  const cd = document.getElementById("countdown");
+
+  function renderCountdown(){
+    const diff = eventDate - Date.now();
+    if (diff < 0) { 
+      cd.innerHTML = "<div style='font-size:20px; font-weight:bold; color:#d4af37'>Той бүгін! 🎉</div>"; 
+      return false;
+    }
+    const d = Math.floor(diff / (1000*60*60*24));
+    const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const s = Math.floor((diff % (1000*60)) / 1000);
+
+    cd.innerHTML = `
+      <div class="cd-item"><div class="cd-num">${d}</div><div class="cd-lbl">Күн</div></div>
+      <div class="cd-item"><div class="cd-num">${h}</div><div class="cd-lbl">Сағ</div></div>
+      <div class="cd-item"><div class="cd-num">${m}</div><div class="cd-lbl">Мин</div></div>
+      <div class="cd-item"><div class="cd-num">${s}</div><div class="cd-lbl">Сек</div></div>
+    `;
+    return true;
+  }
+  renderCountdown();
+  setInterval(renderCountdown, 1000);
+
+  // 5. RSVP -> GOOGLE SHEETS
+  const rsvpForm = document.getElementById("rsvpForm");
+  const rsvpToast = document.getElementById("rsvpToast");
+
+  function toast(msg, isError = false){
+    if(!rsvpToast) return;
+    rsvpToast.textContent = msg;
+    rsvpToast.style.color = isError ? "#d32f2f" : "#2E7D32";
+    rsvpToast.style.borderColor = isError ? "#ef9a9a" : "#C8E6C9";
+    rsvpToast.classList.add("show");
+    setTimeout(()=>rsvpToast.classList.remove("show"), 4000);
+  }
+
+  rsvpForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("guestName").value.trim();
+    const statusEl = document.querySelector('input[name="status"]:checked');
+    if(!name || !statusEl){ toast("Өтінеміз, аты-жөніңізді жазыңыз!", true); return; }
+    
+    const btn = rsvpForm.querySelector('button');
+    const originalBtnText = btn.innerHTML;
+    btn.disabled = true; btn.innerHTML = "Жіберілуде...";
+
+    fetch(SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, status: statusEl.value })
+    })
+    .then(() => { toast(`Рахмет, ${name}! Жауабыңыз сәтті жеткізілді 🤍`); rsvpForm.reset(); })
+    .catch(err => { toast("Қате орын алды. Қайталап көріңіз.", true); })
+    .finally(() => { btn.disabled = false; btn.innerHTML = originalBtnText; });
+  });
+
+  // ==========================================
+  // 6. ИНТЕРАКТИВНЫЙ СТАРТ (TOUCH TO START)
+  // ==========================================
+  
+  let hasStarted = false; // Был ли уже старт
+  let isScrolling = false; // Идет ли сейчас прокрутка
+  let stopScrollSignal = false; // Сигнал для остановки
+
+  // Скорость прокрутки
+  const scrollSpeed = 1.2; 
+
+  function scrollLoop() {
+      if (stopScrollSignal) {
+          isScrolling = false;
+          return;
+      }
+      
+      window.scrollBy(0, scrollSpeed);
+      
+      // Если дошли до низа страницы - стоп
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+          stopScrollSignal = true;
+          isScrolling = false;
+          return;
+      }
+
+      requestAnimationFrame(scrollLoop);
+  }
+
+  function startEverything() {
+      if (hasStarted) return;
+      hasStarted = true;
+
+      // 1. Включаем музыку
+      playFrom30();
+
+      // 2. Включаем скролл
+      isScrolling = true;
+      scrollLoop();
+
+      // 3. Через 1 секунду вешаем "слушателей" на ОСТАНОВКУ
+      // (чтобы первое касание не остановило сразу же)
+      setTimeout(() => {
+          const stopAction = () => {
+              if (isScrolling) {
+                  stopScrollSignal = true; // Останавливаем скролл
+                  // Музыку НЕ трогаем, пусть играет
+              }
+          };
+
+          window.addEventListener('pointerdown', stopAction, { once: true });
+          window.addEventListener('wheel', stopAction, { once: true });
+          window.addEventListener('touchstart', stopAction, { once: true });
+      }, 1000);
+  }
+
+  // Ждем ПЕРВОГО касания в любом месте сайта
+  window.addEventListener('pointerdown', startEverything, { once: true });
+  window.addEventListener('touchstart', startEverything, { once: true }); // Для надежности на iOS
+
+</script>
+
+</body>
+</html>
